@@ -27,11 +27,10 @@
 #define O_BINARY 0
 #endif
 #else
-#include "Windows.h"
-
-#ifdef min
-#undef min
+#ifndef NOMINMAX
+#define NOMINMAX
 #endif
+#include "Windows.h"
 #endif
 
 using std::auto_ptr;
@@ -107,7 +106,7 @@ struct FileBufferCopyIn : public BufferCopyIn {
         return false;
     }
 #endif
-  
+
 };
 
 struct IStreamBufferCopyIn : public BufferCopyIn {
@@ -256,7 +255,7 @@ struct FileBufferCopyOut : public BufferCopyOut {
         }
     }
 #endif
-  
+
 };
 
 struct OStreamBufferCopyOut : public BufferCopyOut {

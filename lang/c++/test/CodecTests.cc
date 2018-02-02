@@ -16,6 +16,12 @@
  * limitations under the License.
  */
 
+#ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#endif
+
 #include <iostream>
 
 #include "Encoder.hh"
@@ -67,7 +73,7 @@ static const unsigned int count = 10;
  * 2. While reading resolve against a reader's schema. The resolver may
  * promote data type, convert from union to plain data type and vice versa,
  * insert or remove fields in records or reorder fields in a record.
- * 
+ *
  * To test Json encoder and decoder, we use the same technqiue with only
  * one difference - we use JsonEncoder and JsonDecoder.
  *
@@ -543,7 +549,7 @@ void testEncoder(const EncoderPtr& e, const char* writerCalls,
     p = generate(*e, writerCalls, v);
 }
 
-static void testDecoder(const DecoderPtr& d, 
+static void testDecoder(const DecoderPtr& d,
     const vector<string>& values, InputStream& data,
     const char* readerCalls, unsigned int skipLevel)
 {
@@ -823,7 +829,7 @@ void testGenericResolving(const TestData3& td) {
 
         BOOST_TEST_CHECKPOINT("Test: " << testNo << ' '
             << " writer-schemai " << td.writerSchema
-            << " writer-calls: " << td.writerCalls 
+            << " writer-calls: " << td.writerCalls
             << " reader-schema: " << td.readerSchema
             << " calls: " << td.readerCalls);
         auto_ptr<InputStream> in2 = memoryInputStream(*ob);
@@ -962,7 +968,7 @@ static const TestData data[] = {
       "{\"name\":\"f6\", \"type\":\"string\"},"
       "{\"name\":\"f7\", \"type\":\"bytes\"}]}",
         "NBILFDS10b25", 1 },
-    
+
     // record of records
     { "{\"type\":\"record\",\"name\":\"outer\",\"fields\":["
       "{\"name\":\"f1\", \"type\":{\"type\":\"record\", "
@@ -976,13 +982,13 @@ static const TestData data[] = {
     // record with name references
     { "{\"type\":\"record\",\"name\":\"r\",\"fields\":["
       "{\"name\":\"f1\", \"type\":{\"type\":\"fixed\", "
-      "\"name\":\"f\", \"size\":10 }}," 
+      "\"name\":\"f\", \"size\":10 }},"
       "{\"name\":\"f2\", \"type\":\"f\"},"
       "{\"name\":\"f3\", \"type\":\"f\"}]}",
       "f10f10f10", 1 },
     { "{\"type\":\"record\",\"name\":\"r\",\"fields\":["
       "{\"name\":\"f1\", \"type\":{\"type\":\"enum\", "
-      "\"name\": \"e\", \"symbols\":[\"s1\", \"s2\"] }}," 
+      "\"name\": \"e\", \"symbols\":[\"s1\", \"s2\"] }},"
       "{\"name\":\"f2\", \"type\":\"e\"},"
       "{\"name\":\"f3\", \"type\":\"e\"}]}",
       "e1e0e1", 1 },
@@ -1007,7 +1013,7 @@ static const TestData data[] = {
       "{\"name\":\"f1\", \"type\":\"long\"},"
       "{\"name\":\"f2\", \"type\":\"null\"}]}}",
         "[c2sLNsLN]", 2 },
-        
+
 
     { "{\"type\":\"array\", \"items\":"
         "{\"type\":\"record\",\"name\":\"r\",\"fields\":["
@@ -1044,14 +1050,14 @@ static const TestData data[] = {
 
     { "[\"boolean\", {\"type\":\"array\", \"items\":\"int\"} ]",
         "U1[c1sI]", 2 },
-      
+
     // Recursion
     { "{\"type\": \"record\", \"name\": \"Node\", \"fields\": ["
       "{\"name\":\"label\", \"type\":\"string\"},"
       "{\"name\":\"children\", \"type\":"
       "{\"type\": \"array\", \"items\": \"Node\" }}]}",
       "S10[c1sS10[]]", 3 },
-      
+
     { "{\"type\": \"record\", \"name\": \"Lisp\", \"fields\": ["
       "{\"name\":\"value\", \"type\":[\"null\", \"string\","
       "{\"type\": \"record\", \"name\": \"Cons\", \"fields\": ["
@@ -1203,7 +1209,7 @@ static const TestData4 data4[] = {
         { "10", "101", NULL }, 1 },
 
     { "{\"type\":\"record\",\"name\":\"outer\",\"fields\":["
-        "{\"name\": \"g1\", " 
+        "{\"name\": \"g1\", "
             "\"type\":{\"type\":\"record\",\"name\":\"inner\",\"fields\":["
             "{\"name\":\"f2\", \"type\":\"int\"}]}}, "
             "{\"name\": \"g2\", \"type\": \"long\"}]}", "IL",
@@ -1592,7 +1598,7 @@ static void testJson(const JsonData& data)
 }   // namespace avro
 
 boost::unit_test::test_suite*
-init_unit_test_suite( int argc, char* argv[] ) 
+init_unit_test_suite( int argc, char* argv[] )
 {
     using namespace boost::unit_test;
 
