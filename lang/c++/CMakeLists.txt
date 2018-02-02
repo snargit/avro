@@ -60,7 +60,7 @@ endif ()
 
 
 find_package (Boost 1.38 REQUIRED
-    COMPONENTS filesystem system program_options iostreams)
+    COMPONENTS filesystem system program_options iostreams regex)
 
 find_package(Snappy)
 if (SNAPPY_FOUND)
